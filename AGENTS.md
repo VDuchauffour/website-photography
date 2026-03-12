@@ -42,9 +42,60 @@ layouts/
   partials/footer.html         # Social SVG icons + copyright
 static/css/style.css           # ALL styling — single CSS file, no preprocessor
 archetypes/default.md          # Scaffolding template for new gallery entries
+infra/
+  providers.tf                 # Scaleway provider config
+  main.tf                      # Object Storage bucket, public-read policy, CORS
+  variables.tf                 # Input variables (credentials, region, bucket name)
+  outputs.tf                   # Bucket name, endpoint, public base URL
+  terraform.tfvars.example     # Template for secrets — copy to terraform.tfvars
+  scripts/upload.sh            # Upload images via s3cmd (configured by scw CLI)
 ```
 
 No `themes/` directory is used — all layouts live at project level. Do NOT create theme directories.
+
+## Image Storage
+
+Images are hosted on **Scaleway Object Storage** (S3-compatible) and referenced as external URLs in frontmatter. No images are stored in the git repo.
+
+**Bucket URL pattern:** `https://{bucket}.s3.{region}.scw.cloud/{key}`
+
+Example in frontmatter:
+
+```yaml
+coverImage: https://photos.s3.fr-par.scw.cloud/gallery/brutalist-towers/cover.jpg
+```
+
+### Infrastructure (Terraform)
+
+Infra lives in `infra/`. Managed with OpenTofu/Terraform.
+
+```bash
+# Init + apply
+cd infra
+cp terraform.tfvars.example terraform.tfvars # fill in Scaleway API keys
+tofu init && tofu apply
+```
+
+Provisioned resources:
+
+- `scaleway_object_bucket` — photo storage with CORS and lifecycle rules
+- `scaleway_object_bucket_policy` — public-read access for all objects
+
+### Uploading Images
+
+Requires `scw` CLI and `s3cmd`:
+
+```bash
+# One-time: configure s3cmd via Scaleway CLI
+scw object config install type=s3cmd
+
+# Upload a gallery series
+./infra/scripts/upload.sh ./photos/brutalist-towers gallery/brutalist-towers
+```
+
+Images land at `s3://{bucket}/gallery/{series-name}/` and are publicly accessible immediately.
+
+**File naming convention:** keep filenames lowercase, hyphenated, no spaces. Example: `bt-01.jpg`, `cover.jpg`.
 
 ## Content Authoring
 

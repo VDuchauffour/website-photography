@@ -1,0 +1,16 @@
+# Copy to terraform.tfvars and fill in your values
+# >>> NEVER commit terraform.tfvars — it contains secrets <<<
+
+# Scaleway API credentials
+# Generate at: https://console.scaleway.com/iam/api-keys
+scw_access_key = "SCW..."
+scw_secret_key = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+scw_project_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+
+# Bucket config
+region      = "fr-par"          # fr-par | nl-ams | pl-waw
+bucket_name = "photos"
+environment = "production"
+
+# CORS — restrict to your domain in production, "*" allows any origin
+cors_allowed_origins = ["https://your-domain.com", "http://localhost:1313"]

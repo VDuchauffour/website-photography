@@ -16,6 +16,34 @@ docker compose --profile prod up --build
 
 Create a new file in `content/gallery/` (copy an existing one as template). Fill in `title`, `location`, `year`, `coverImage`, and `images` array. See `content/gallery/brutalist-towers.md` for reference.
 
+## Image Storage
+
+Photos are hosted on Scaleway Object Storage. Images are referenced as URLs in gallery frontmatter.
+
+```bash
+# One-time setup: configure s3cmd via Scaleway CLI
+scw object config install type=s3cmd
+
+# Upload a series
+./infra/scripts/upload.sh ./photos/brutalist-towers gallery/brutalist-towers
+```
+
+Then reference in your markdown:
+
+```yaml
+coverImage: https://photos.s3.fr-par.scw.cloud/gallery/brutalist-towers/cover.jpg
+```
+
+### Infrastructure
+
+Bucket and access policies are managed with Terraform in `infra/`.
+
+```bash
+cd infra
+cp terraform.tfvars.example terraform.tfvars # fill in your Scaleway API keys
+tofu init && tofu apply
+```
+
 ## Project Structure
 
 ```
@@ -25,4 +53,6 @@ content/             Markdown content
   about/_index.md    About page
 layouts/             Hugo templates (no themes directory)
 static/css/style.css All styling — single vanilla CSS file
+infra/               Terraform — Scaleway Object Storage bucket
+  scripts/upload.sh  Upload images via s3cmd
 ```
