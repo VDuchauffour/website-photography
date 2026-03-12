@@ -1,0 +1,31 @@
+{{ define "main" }}
+<article class="series-page">
+  <div class="series-header">
+    <a href="/gallery/" class="back-link">&larr; Back to Gallery</a>
+    <h1 class="page-title">{{ .Title }}</h1>
+    {{ with .Params.location }}
+      <p class="series-location">{{ . }}</p>
+    {{ end }}
+    {{ with .Params.year }}
+      <p class="series-year">{{ . }}</p>
+    {{ end }}
+  </div>
+
+  <div class="series-description">
+    {{ .Content }}
+  </div>
+
+  {{ with .Params.images }}
+    <div class="series-grid">
+      {{ range . }}
+        <figure class="series-figure">
+          <img src="{{ .src }}" alt="{{ .alt }}" loading="lazy">
+          {{ with .caption }}
+            <figcaption>{{ . }}</figcaption>
+          {{ end }}
+        </figure>
+      {{ end }}
+    </div>
+  {{ end }}
+</article>
+{{ end }}

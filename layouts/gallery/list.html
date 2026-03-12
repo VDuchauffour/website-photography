@@ -1,0 +1,23 @@
+{{ define "main" }}
+<section class="gallery-page">
+  <div class="gallery-header">
+    <h1 class="page-title">Gallery</h1>
+    <p class="page-subtitle">{{ .Description }}</p>
+  </div>
+  <div class="gallery-grid">
+    {{ range .Pages }}
+      <a href="{{ .Permalink }}" class="gallery-item">
+        <div class="gallery-img">
+          <img src="{{ .Params.coverImage }}" alt="{{ .Title }}" loading="lazy">
+        </div>
+        <div class="gallery-meta">
+          <h2 class="gallery-item-title">{{ .Title }}</h2>
+          {{ with .Params.location }}
+            <span class="gallery-location">{{ . }}</span>
+          {{ end }}
+        </div>
+      </a>
+    {{ end }}
+  </div>
+</section>
+{{ end }}

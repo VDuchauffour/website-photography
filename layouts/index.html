@@ -1,0 +1,38 @@
+{{ define "main" }}
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-title">
+      <h1>
+        <span class="title-line title-line--1">Concrete</span>
+        <span class="title-line title-line--2">Visions</span>
+      </h1>
+      <p class="hero-tagline">{{ .Site.Params.tagline }}</p>
+      <a href="/gallery/" class="hero-cta">View Gallery</a>
+    </div>
+    <div class="hero-images">
+      <div class="hero-img hero-img--portrait">
+        <img src="{{ .Site.Params.heroImage1 }}" alt="Brutalist architecture detail" loading="eager">
+      </div>
+      <div class="hero-img hero-img--landscape">
+        <img src="{{ .Site.Params.heroImage2 }}" alt="Concrete facade" loading="eager">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="home-featured">
+  <div class="section-inner">
+    <h2 class="section-heading">Selected Works</h2>
+    <div class="featured-grid">
+      {{ range first 4 (where .Site.RegularPages "Section" "gallery") }}
+        <a href="{{ .Permalink }}" class="featured-item">
+          <div class="featured-img">
+            <img src="{{ .Params.coverImage }}" alt="{{ .Title }}" loading="lazy">
+          </div>
+          <h3 class="featured-title">{{ .Title }}</h3>
+        </a>
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}
