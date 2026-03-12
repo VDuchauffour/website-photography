@@ -328,9 +328,9 @@ a:hover {
 
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr;
   gap: var(--space-md);
-  max-width: 1600px;
+  max-width: 900px;
   margin: 0 auto;
 }
 
