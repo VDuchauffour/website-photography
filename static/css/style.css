@@ -85,7 +85,7 @@ a:hover {
   left: 0;
   right: 0;
   z-index: 100;
-  padding: var(--space-md) var(--space-lg);
+  padding: var(--space-xl) var(--space-lg);
   background: transparent;
   pointer-events: none;
 }
@@ -94,15 +94,14 @@ a:hover {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--space-xs);
-  max-width: 1600px;
-  margin: 0 auto;
+  gap: var(--space-md);
   pointer-events: auto;
 }
 
 .site-title {
   font-family: var(--font-display);
   font-size: 1.25rem;
+  line-height: 1.2;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--white);
@@ -115,7 +114,8 @@ a:hover {
 .nav-links {
   list-style: none;
   display: flex;
-  gap: var(--space-lg);
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .nav-links a {
@@ -155,7 +155,7 @@ a:hover {
 .carousel {
   position: relative;
   max-width: 900px;
-  margin: calc(var(--space-2xl) + 2rem) auto var(--space-md);
+  margin: var(--space-xl) auto var(--space-md);
   overflow: hidden;
   padding-bottom: var(--space-sm);
   border-bottom: 1px solid var(--gray-800);
