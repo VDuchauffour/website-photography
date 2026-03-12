@@ -2,34 +2,34 @@ baseURL = "https://example.com/"
 languageCode = "en-us"
 title = "Concrete Visions"
 [pagination]
-pagerSize = 24
+  pagerSize = 24
 summarylength = 20
 
 [params]
-description = "Architecture photography by Karel Novak"
-author = "Karel Novak"
-tagline = "Brutalist & modernist architecture through a raw lens"
-instagram = "https://www.instagram.com/vincentduchauffour/"
-copyright = "Concrete Visions"
-heroImage1 = "https://picsum.photos/seed/hero-brutalist/900/1200"
-heroImage2 = "https://picsum.photos/seed/hero-facade/900/600"
+  description = "Architecture photography by Karel Novak"
+  author = "Karel Novak"
+  tagline = "Brutalist & modernist architecture through a raw lens"
+  instagram = "https://www.instagram.com/vincentduchauffour/"
+  copyright = "Concrete Visions"
+  heroImage1 = "https://picsum.photos/seed/hero-brutalist/900/1200"
+  heroImage2 = "https://picsum.photos/seed/hero-facade/900/600"
 
 [menu]
-[[menu.main]]
-name = "Home"
-url = "/"
-weight = 1
-[[menu.main]]
-name = "Gallery"
-url = "/gallery/"
-weight = 2
+  [[menu.main]]
+    name = "Home"
+    url = "/"
+    weight = 1
+  [[menu.main]]
+    name = "Gallery"
+    url = "/gallery/"
+    weight = 2
 
 
 [markup]
-[markup.goldmark]
-[markup.goldmark.renderer]
-unsafe = true
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
 
 [outputs]
-home = ["HTML"]
-section = ["HTML"]
+  home = ["HTML"]
+  section = ["HTML"]
