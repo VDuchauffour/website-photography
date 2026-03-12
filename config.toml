@@ -1,6 +1,6 @@
 baseURL = "https://example.com/"
 languageCode = "en-us"
-title = "Concrete Visions"
+title = "Vincent Duchauffour"
 [pagination]
 pagerSize = 24
 summarylength = 20
