@@ -1,9 +1,5 @@
 {{ define "main" }}
 <section class="gallery-page">
-  <div class="gallery-header">
-    <h1 class="page-title">Gallery</h1>
-    <p class="page-subtitle">{{ .Description }}</p>
-  </div>
   <div class="gallery-grid">
     {{ range .Pages }}
       <a href="{{ .Permalink }}" class="gallery-item">
