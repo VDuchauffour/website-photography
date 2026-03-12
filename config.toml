@@ -23,10 +23,7 @@ summarylength = 20
     name = "Gallery"
     url = "/gallery/"
     weight = 2
-  [[menu.main]]
-    name = "About"
-    url = "/about/"
-    weight = 3
+
 
 [markup]
   [markup.goldmark]

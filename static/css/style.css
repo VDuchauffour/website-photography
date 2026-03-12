@@ -485,57 +485,7 @@ a:hover {
 }
 
 
-/* --- About Page --- */
-.about-page {
-  padding: calc(var(--space-2xl) + 2rem) var(--space-lg) var(--space-2xl);
-}
 
-.about-inner {
-  display: grid;
-  grid-template-columns: 1fr 1.5fr;
-  gap: var(--space-xl);
-  max-width: 1200px;
-  margin: 0 auto;
-  align-items: start;
-}
-
-.about-portrait {
-  position: sticky;
-  top: calc(var(--space-2xl) + 2rem);
-}
-
-.about-portrait img {
-  width: 100%;
-  aspect-ratio: 3 / 4;
-  object-fit: cover;
-  filter: grayscale(40%) contrast(1.05);
-}
-
-.about-content .page-title {
-  margin-bottom: var(--space-lg);
-}
-
-.about-content p {
-  font-size: 1rem;
-  line-height: 1.9;
-  color: var(--gray-200);
-  margin-bottom: var(--space-md);
-}
-
-.about-content strong {
-  color: var(--white);
-  font-weight: 500;
-}
-
-.about-content a {
-  color: var(--accent);
-  border-bottom: 1px solid var(--accent-dim);
-  transition: border-color var(--transition);
-}
-
-.about-content a:hover {
-  border-color: var(--accent);
-}
 
 
 /* --- Footer --- */
