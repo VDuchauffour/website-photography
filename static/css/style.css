@@ -155,8 +155,10 @@ a:hover {
 .carousel {
   position: relative;
   max-width: 900px;
-  margin: calc(var(--space-2xl) + 2rem) auto var(--space-xl);
+  margin: calc(var(--space-2xl) + 2rem) auto var(--space-md);
   overflow: hidden;
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--gray-800);
 }
 
 .carousel-track {
@@ -540,16 +542,15 @@ a:hover {
 
 /* --- Footer --- */
 .site-footer {
-  border-top: 1px solid var(--gray-800);
-  padding: var(--space-lg);
-  margin-top: var(--space-xl);
+  padding: var(--space-xs) 0;
+  margin-top: 0;
 }
 
 .footer-inner {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1600px;
+  max-width: 900px;
   margin: 0 auto;
 }
 
