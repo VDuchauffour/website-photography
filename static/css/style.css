@@ -403,85 +403,22 @@ a:hover {
 
 /* --- Series / Single Gallery Page --- */
 .series-page {
-  padding: calc(var(--space-2xl) + 2rem) var(--space-lg) var(--space-2xl);
-  max-width: 1600px;
-  margin: 0 auto;
-}
-
-.series-header {
-  margin-bottom: var(--space-lg);
-}
-
-.back-link {
-  display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 400;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--gray-400);
-  margin-bottom: var(--space-md);
-  transition: color var(--transition);
-}
-
-.back-link:hover {
-  color: var(--accent);
-}
-
-.series-location {
-  font-size: 0.85rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-top: var(--space-xs);
-}
-
-.series-year {
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  color: var(--gray-600);
-  margin-top: 0.25rem;
-}
-
-.series-description {
-  max-width: 65ch;
-  font-size: 1rem;
-  line-height: 1.8;
-  color: var(--gray-200);
-  margin-bottom: var(--space-xl);
-}
-
-.series-description p {
-  margin-bottom: var(--space-sm);
+  padding: var(--space-xl) var(--space-lg) 0;
 }
 
 .series-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  flex-direction: column;
   gap: var(--space-md);
-}
-
-.series-figure {
-  overflow: hidden;
+  max-width: 900px;
+  margin: 0 auto var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--gray-800);
 }
 
 .series-figure img {
   width: 100%;
-  aspect-ratio: 3 / 2;
   object-fit: cover;
-  filter: grayscale(10%);
-  transition: filter var(--transition);
-}
-
-.series-figure:hover img {
-  filter: grayscale(0%);
-}
-
-.series-figure figcaption {
-  font-size: 0.75rem;
-  font-weight: 300;
-  letter-spacing: 0.08em;
-  color: var(--gray-600);
-  padding-top: var(--space-xs);
 }
 
 
