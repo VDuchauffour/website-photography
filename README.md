@@ -1,6 +1,6 @@
-# Concrete Visions
+# Website for my photographies
 
-Architecture photography portfolio built with Hugo. Dark brutalist aesthetic, no JavaScript frameworks.
+Photography portfolio built with Hugo.
 
 ## Quick Start
 
