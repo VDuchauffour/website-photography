@@ -379,27 +379,15 @@ a:hover {
   padding: var(--space-xs) 0;
 }
 
-.gallery-item-title {
-  font-family: var(--font-body);
-  font-weight: 500;
-  font-size: 0.85rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--gray-200);
-  transition: color var(--transition);
-}
-
-.gallery-item:hover .gallery-item-title {
-  color: var(--white);
-}
-
 .gallery-location {
   display: block;
   font-size: 0.75rem;
-  font-weight: 300;
-  letter-spacing: 0.08em;
-  color: var(--gray-600);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray-400);
   margin-top: 0.15rem;
+  text-align: center;
 }
 
 
