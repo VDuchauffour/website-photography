@@ -1,38 +1,54 @@
 {{ define "main" }}
-<section class="hero">
-  <div class="hero-inner">
-    <div class="hero-title">
-      <h1>
-        <span class="title-line title-line--1">Concrete</span>
-        <span class="title-line title-line--2">Visions</span>
-      </h1>
-      <p class="hero-tagline">{{ .Site.Params.tagline }}</p>
-      <a href="/gallery/" class="hero-cta">View Gallery</a>
-    </div>
-    <div class="hero-images">
-      <div class="hero-img hero-img--portrait">
-        <img src="{{ .Site.Params.heroImage1 }}" alt="Brutalist architecture detail" loading="eager">
+<section class="carousel">
+  <div class="carousel-track">
+    {{ range where .Site.RegularPages "Section" "gallery" }}
+      <div class="carousel-slide">
+        <img src="{{ .Params.coverImage }}" alt="{{ .Title }}" loading="eager">
+        <div class="carousel-caption">
+          <span class="carousel-title">{{ .Title }}</span>
+          {{ with .Params.location }}
+            <span class="carousel-location">{{ . }}</span>
+          {{ end }}
+        </div>
       </div>
-      <div class="hero-img hero-img--landscape">
-        <img src="{{ .Site.Params.heroImage2 }}" alt="Concrete facade" loading="eager">
-      </div>
-    </div>
+    {{ end }}
   </div>
+  <button class="carousel-arrow carousel-arrow--prev" aria-label="Previous image">&#8249;</button>
+  <button class="carousel-arrow carousel-arrow--next" aria-label="Next image">&#8250;</button>
 </section>
 
-<section class="home-featured">
-  <div class="section-inner">
-    <h2 class="section-heading">Selected Works</h2>
-    <div class="featured-grid">
-      {{ range first 4 (where .Site.RegularPages "Section" "gallery") }}
-        <a href="{{ .Permalink }}" class="featured-item">
-          <div class="featured-img">
-            <img src="{{ .Params.coverImage }}" alt="{{ .Title }}" loading="lazy">
-          </div>
-          <h3 class="featured-title">{{ .Title }}</h3>
-        </a>
-      {{ end }}
-    </div>
-  </div>
-</section>
+<script>
+(function() {
+  var slides = document.querySelectorAll('.carousel-slide');
+  if (slides.length < 2) return;
+  var current = 0;
+  var timer;
+  slides[0].classList.add('is-active');
+
+  function go(dir) {
+    var prev = current;
+    current = (current + dir + slides.length) % slides.length;
+    var out = slides[prev];
+    var into = slides[current];
+    if (dir > 0) {
+      out.classList.add('slide-out-left');
+      into.classList.add('slide-in-right', 'is-active');
+    } else {
+      out.classList.add('slide-out-right');
+      into.classList.add('slide-in-left', 'is-active');
+    }
+    setTimeout(function() {
+      out.classList.remove('is-active', 'slide-out-left', 'slide-out-right');
+      into.classList.remove('slide-in-right', 'slide-in-left');
+    }, 600);
+  }
+
+  function start() { timer = setInterval(function() { go(1); }, 3000); }
+  function reset() { clearInterval(timer); start(); }
+
+  document.querySelector('.carousel-arrow--prev').addEventListener('click', function() { go(-1); reset(); });
+  document.querySelector('.carousel-arrow--next').addEventListener('click', function() { go(1); reset(); });
+  start();
+})();
+</script>
 {{ end }}
