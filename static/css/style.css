@@ -107,9 +107,7 @@ a:hover {
   color: var(--white);
 }
 
-.site-title:hover {
-  color: var(--accent);
-}
+
 
 .nav-links {
   list-style: none;
