@@ -1,4 +1,3 @@
----
-title: "Concrete Visions"
-description: "Brutalist & modernist architecture through a raw lens"
----
+______________________________________________________________________
+
+## title: "Concrete Visions" description: "Brutalist & modernist architecture through a raw lens"

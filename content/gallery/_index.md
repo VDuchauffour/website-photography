@@ -1,4 +1,3 @@
----
-title: "Gallery"
-description: "Architecture photography series — brutalism, modernism, raw concrete"
----
+______________________________________________________________________
+
+## title: "Gallery" description: "Architecture photography series — brutalism, modernism, raw concrete"
