@@ -4,12 +4,6 @@
     {{ range where .Site.RegularPages "Section" "gallery" }}
       <div class="carousel-slide">
         <img src="{{ .Params.coverImage }}" alt="{{ .Title }}" loading="eager">
-        <div class="carousel-caption">
-          <span class="carousel-title">{{ .Title }}</span>
-          {{ with .Params.location }}
-            <span class="carousel-location">{{ . }}</span>
-          {{ end }}
-        </div>
       </div>
     {{ end }}
   </div>
