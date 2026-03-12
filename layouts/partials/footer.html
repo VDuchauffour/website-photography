@@ -1,21 +1,17 @@
 <footer class="site-footer">
   <div class="footer-inner">
     <div class="footer-social">
+      <a href="https://flic.kr/ps/45L4NT" target="_blank" rel="noopener noreferrer" aria-label="Flickr" class="flickr-link">
+          <img src="/img/flickr.png" alt="Flickr" width="20" height="20">
+        </a>
       {{ with .Site.Params.instagram }}
         <a href="{{ . }}" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
         </a>
       {{ end }}
-      {{ with .Site.Params.vimeo }}
-        <a href="{{ . }}" target="_blank" rel="noopener noreferrer" aria-label="Vimeo">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22.875 5.37c-.1 2.19-1.625 5.19-4.575 9.01C15.225 18.19 12.6 20 10.35 20c-1.4 0-2.575-1.287-3.525-3.862L5.15 9.637c-.575-2.575-1.2-3.862-1.85-3.862-.15 0-.65.3-1.525.9L.75 5.325c.95-.838 1.9-1.675 2.825-2.512C4.85 1.625 5.95 1.012 6.725.95c1.475-.138 2.388.862 2.725 3.012.375 2.325.625 3.775.775 4.338.425 1.95.9 2.913 1.425 2.913.4 0 1-.637 1.8-1.913.8-1.275 1.225-2.25 1.275-2.912.113-1.1-.325-1.65-1.3-1.65-.463 0-.938.106-1.425.319.95-3.1 2.762-4.6 5.437-4.525 1.988.05 2.925 1.35 2.813 3.838z"/></svg>
+      <a href="https://buymeacoffee.com/vincentduchauffour" target="_blank" rel="noopener noreferrer" aria-label="Buy Me a Coffee" class="bmc-link">
+          <img src="/img/bmc-logo-no-background.png" alt="Buy Me a Coffee" width="20" height="20">
         </a>
-      {{ end }}
-      {{ with .Site.Params.email }}
-        <a href="mailto:{{ . }}" aria-label="Email">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        </a>
-      {{ end }}
     </div>
     <div class="footer-copy">
       &copy; All images Vincent Duchauffour
