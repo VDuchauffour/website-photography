@@ -85,6 +85,7 @@ This uses `archetypes/default.md` which pre-fills coverImage with a picsum.photo
 ## Config (config.toml)
 
 Site-wide params live under `[params]`:
+
 - `heroImage1`, `heroImage2` — homepage hero images
 - `instagram`, `vimeo`, `email` — social links (footer renders SVG icons conditionally)
 - `tagline` — homepage subtitle
@@ -146,6 +147,7 @@ Spacing tokens are redefined at each breakpoint (no separate utility classes). G
 ### Image Treatment
 
 All gallery/featured images use:
+
 - `object-fit: cover` with fixed `aspect-ratio`
 - Base state: `filter: grayscale(20-30%) brightness(0.9)`
 - Hover state: `filter: grayscale(0%) brightness(1)` + `transform: scale(1.03-1.05)`
@@ -160,6 +162,7 @@ Two keyframes defined: `slideUp` and `fadeIn`. Used only on homepage hero elemen
 ### Template Pattern
 
 Every page layout follows:
+
 ```html
 {{ define "main" }}
 <section class="page-name">
@@ -188,6 +191,7 @@ Every page layout follows:
 ## Design Rules (DO / DON'T)
 
 **DO:**
+
 - Keep the dark theme — `#000` background everywhere
 - Use Archivo Black for display/headings, Barlow for everything else
 - Maintain generous negative space
@@ -195,6 +199,7 @@ Every page layout follows:
 - Write real descriptive content — no lorem ipsum, no placeholder filler text
 
 **DON'T:**
+
 - Add light/white backgrounds or sections
 - Add JavaScript unless absolutely necessary
 - Use additional fonts beyond the two loaded from Google Fonts
