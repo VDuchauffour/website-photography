@@ -2,9 +2,12 @@
 <section class="carousel">
   <div class="carousel-track">
     {{ range where .Site.RegularPages "Section" "series" }}
+      {{ $series := .Title }}
+      {{ range .Params.images }}
       <div class="carousel-slide">
-        <img src="{{ .Params.coverImage }}" alt="{{ .Title }}" loading="eager">
+        <img src="{{ .src }}" alt="{{ .alt }}" loading="eager">
       </div>
+      {{ end }}
     {{ end }}
   </div>
   <button class="carousel-arrow carousel-arrow--prev" aria-label="Previous image">&#8249;</button>
@@ -14,10 +17,10 @@
 <script>
 (function() {
   var slides = document.querySelectorAll('.carousel-slide');
-  if (slides.length < 2) return;
   var current = 0;
   var timer;
   slides[0].classList.add('is-active');
+  if (slides.length < 2) return;
 
   function go(dir) {
     var prev = current;
