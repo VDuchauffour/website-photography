@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Static photography portfolio built with **Hugo** (no themes, no JS frameworks). Dark brutalist aesthetic for architecture photography. Three pages: Home, Gallery (with individual series), About.
+Static photography portfolio built with **Hugo** (no themes, no JS frameworks). Dark brutalist aesthetic for architecture photography. Three pages: Home, Series (with individual series), About.
 
 ## Build & Dev Commands
 
@@ -27,21 +27,21 @@ config.toml                    # Site config (TOML only — not YAML, not JSON)
 content/
   _index.md                    # Homepage (minimal frontmatter)
   about/_index.md              # About page (branch bundle)
-  gallery/
-    _index.md                  # Gallery listing page (branch bundle)
+  series/
+    _index.md                  # Series listing page (branch bundle)
     brutalist-towers.md        # Individual series (leaf pages)
     ...
 layouts/
   _default/baseof.html         # Base template — all pages inherit from this
   index.html                   # Homepage layout
-  gallery/list.html            # Gallery grid listing
-  gallery/single.html          # Individual series page
+  series/list.html             # Series grid listing
+  series/single.html           # Individual series page
   about/list.html              # About page layout
   _default/taxonomy.html       # Tags/categories (minimal)
   partials/header.html         # Nav bar (fixed, gradient bg)
   partials/footer.html         # Social SVG icons + copyright
 static/css/style.css           # ALL styling — single CSS file, no preprocessor
-archetypes/default.md          # Scaffolding template for new gallery entries
+archetypes/default.md          # Scaffolding template for new series entries
 infra/
   providers.tf                 # Scaleway provider config
   main.tf                      # Object Storage bucket, public-read policy, CORS
@@ -62,7 +62,7 @@ Images are hosted on **Scaleway Object Storage** (S3-compatible) and referenced 
 Example in frontmatter:
 
 ```yaml
-coverImage: https://photos.s3.fr-par.scw.cloud/gallery/brutalist-towers/cover.jpg
+coverImage: https://photos.s3.fr-par.scw.cloud/series/brutalist-towers/cover.jpg
 ```
 
 ### Infrastructure (Terraform)
@@ -89,19 +89,19 @@ Requires `scw` CLI and `s3cmd`:
 # One-time: configure s3cmd via Scaleway CLI
 scw object config install type=s3cmd
 
-# Upload a gallery series
-./infra/scripts/upload.sh ./photos/brutalist-towers gallery/brutalist-towers
+# Upload a series
+./infra/scripts/upload.sh ./photos/brutalist-towers series/brutalist-towers
 ```
 
-Images land at `s3://{bucket}/gallery/{series-name}/` and are publicly accessible immediately.
+Images land at `s3://{bucket}/series/{series-name}/` and are publicly accessible immediately.
 
 **File naming convention:** keep filenames lowercase, hyphenated, no spaces. Example: `bt-01.jpg`, `cover.jpg`.
 
 ## Content Authoring
 
-### Gallery Series Frontmatter Schema
+### Series Frontmatter Schema
 
-Every file in `content/gallery/*.md` must follow this exact schema:
+Every file in `content/series/*.md` must follow this exact schema:
 
 ```yaml
 ---
@@ -109,7 +109,7 @@ title: "Series Name"
 date: 2025-11-15            # Used for sort order
 location: "City, Country"
 year: "2024–2025"           # Display string, can span years
-coverImage: "https://..."   # Thumbnail for gallery grid (800x600)
+coverImage: "https://..."   # Thumbnail for series grid (800x600)
 images:                     # Array of photos in the series
   - src: "https://..."      # Full-size image URL (1200x800)
     alt: "Descriptive text"
@@ -121,14 +121,14 @@ Body text: 1–2 paragraphs describing the series. No lorem ipsum.
 
 ### Branch Bundles
 
-- `content/gallery/_index.md` — only needs `title` and `description`
+- `content/series/_index.md` — only needs `title` and `description`
 - `content/about/_index.md` — `title`, `description`, then markdown body
 - `content/_index.md` — `title`, `description` only (layout pulls from config params)
 
-### Adding a New Gallery Series
+### Adding a New Series
 
 ```bash
-nix-shell -p hugo --run "hugo new gallery/new-series-name.md"
+nix-shell -p hugo --run "hugo new series/new-series-name.md"
 ```
 
 This uses `archetypes/default.md` which pre-fills coverImage with a picsum.photos URL seeded from the filename.
@@ -174,8 +174,8 @@ All colors, fonts, spacing, and transitions are defined in `:root`:
 BEM-influenced flat classes. Pattern: `.component-element--modifier`
 
 ```
-.hero-img--portrait    .title-line--1    .gallery-item-title
-.hero-img--landscape   .title-line--2    .gallery-location
+.hero-img--portrait    .title-line--1    .series-list-title
+.hero-img--landscape   .title-line--2    .series-list-location
 ```
 
 No nesting beyond `.parent:hover .child` for interactive states.
@@ -189,15 +189,15 @@ Use spacing tokens exclusively: `--space-xs` (0.5rem) through `--space-2xl` (8re
 ```css
 /* Mobile: ≤640px   — 1 column, compact spacing */
 /* Tablet: ≤1024px  — 2 columns, medium spacing */
-/* Desktop: default — 3 columns (gallery), 4 (featured) */
-/* Large:  ≥1400px  — 4 columns (gallery) */
+/* Desktop: default — 1 column (series), 3 (featured) */
+/* Large:  ≥1400px  — 4 columns (series) */
 ```
 
 Spacing tokens are redefined at each breakpoint (no separate utility classes). Grid columns collapse progressively.
 
 ### Image Treatment
 
-All gallery/featured images use:
+All series/featured images use:
 
 - `object-fit: cover` with fixed `aspect-ratio`
 - Base state: `filter: grayscale(20-30%) brightness(0.9)`

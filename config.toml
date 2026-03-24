@@ -20,8 +20,8 @@ name = "Home"
 url = "/"
 weight = 1
 [[menu.main]]
-name = "Gallery"
-url = "/gallery/"
+name = "Series"
+url = "/series/"
 weight = 2
 
 

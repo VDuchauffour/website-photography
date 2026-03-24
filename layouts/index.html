@@ -1,7 +1,7 @@
 {{ define "main" }}
 <section class="carousel">
   <div class="carousel-track">
-    {{ range where .Site.RegularPages "Section" "gallery" }}
+    {{ range where .Site.RegularPages "Section" "series" }}
       <div class="carousel-slide">
         <img src="{{ .Params.coverImage }}" alt="{{ .Title }}" loading="eager">
       </div>

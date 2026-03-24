@@ -1,14 +1,14 @@
 {{ define "main" }}
-<section class="gallery-page">
-  <div class="gallery-grid">
+<section class="series-list-page">
+  <div class="series-list-grid">
     {{ range .Pages }}
-      <a href="{{ .Permalink }}" class="gallery-item">
-        <div class="gallery-img">
+      <a href="{{ .Permalink }}" class="series-list-item">
+        <div class="series-list-img">
           <img src="{{ .Params.coverImage }}" alt="{{ .Title }}" loading="lazy">
         </div>
-        <div class="gallery-meta">
+        <div class="series-list-meta">
           {{ with .Params.location }}
-            <span class="gallery-location">{{ . }}</span>
+            <span class="series-list-location">{{ . }}</span>
           {{ end }}
         </div>
       </a>

@@ -8,14 +8,14 @@ set -euo pipefail
 #
 # Usage:
 #   ./upload.sh <local-dir> <remote-prefix>
-#   ./upload.sh ./photos/brutalist-towers gallery/brutalist-towers
+#   ./upload.sh ./photos/brutalist-towers series/brutalist-towers
 
 BUCKET="photos"
 REGION="fr-par"
 
 if [[ $# -lt 2 ]]; then
 	echo "Usage: $0 <local-directory> <remote-prefix>"
-	echo "Example: $0 ./photos/brutalist-towers gallery/brutalist-towers"
+	echo "Example: $0 ./photos/brutalist-towers series/brutalist-towers"
 	exit 1
 fi
 

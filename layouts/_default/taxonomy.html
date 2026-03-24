@@ -1,18 +1,18 @@
 {{ define "main" }}
-<section class="gallery-page">
-  <div class="gallery-header">
+<section class="series-list-page">
+  <div class="series-list-header">
     <h1 class="page-title">{{ .Title }}</h1>
   </div>
-  <div class="gallery-grid">
+  <div class="series-list-grid">
     {{ range .Pages }}
-      <a href="{{ .Permalink }}" class="gallery-item">
-        <div class="gallery-img">
+      <a href="{{ .Permalink }}" class="series-list-item">
+        <div class="series-list-img">
           {{ with .Params.coverImage }}
             <img src="{{ . }}" alt="{{ $.Title }}" loading="lazy">
           {{ end }}
         </div>
-        <div class="gallery-meta">
-          <h2 class="gallery-item-title">{{ .Title }}</h2>
+        <div class="series-list-meta">
+          <h2 class="series-list-title">{{ .Title }}</h2>
         </div>
       </a>
     {{ end }}
