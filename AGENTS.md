@@ -150,6 +150,7 @@ Every file in `content/series/*.md` must follow this exact schema:
 ```yaml
 ---
 title: "Series Name"
+fullname: "Full Address, Paris N, FR"  # Full address for metadata
 date: 2025-11-15            # Used for sort order
 location: "City, Country"
 year: "2024–2025"           # Display string, can span years
@@ -160,7 +161,8 @@ images:                     # Array of photos in the series
     caption: "Location or technical detail"
 ---
 
-Body text: 1–2 paragraphs describing the series. No lorem ipsum.
+Body text: 1–2 paragraphs describing the series in English. No lorem ipsum.
+# Captions stay in French; body text and alt attributes are always in English.
 ```
 
 ### Branch Bundles
