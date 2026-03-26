@@ -9,10 +9,3 @@ services:
       - 1313:1313
     profiles:
       - dev
-
-  prod:
-    build: .
-    ports:
-      - 8080:80
-    profiles:
-      - prod
