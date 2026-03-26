@@ -40,10 +40,10 @@
     setTimeout(function() {
       out.classList.remove('is-active', 'slide-out-left', 'slide-out-right');
       into.classList.remove('slide-in-right', 'slide-in-left');
-    }, 600);
+    }, 1000);
   }
 
-  function start() { timer = setInterval(function() { go(1); }, 3000); }
+  function start() { timer = setInterval(function() { go(1); }, 5000); }
   function reset() { clearInterval(timer); start(); }
 
   document.querySelector('.carousel-arrow--prev').addEventListener('click', function() { go(-1); reset(); });
