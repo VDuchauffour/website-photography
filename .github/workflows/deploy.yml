@@ -13,6 +13,12 @@ concurrency:
   group: deploy-production
   cancel-in-progress: false
 
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.SCW_ACCESS_KEY }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.SCW_SECRET_KEY }}
+  AWS_DEFAULT_REGION: fr-par
+  AWS_ENDPOINT_URL: https://s3.fr-par.scw.cloud
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -41,11 +47,6 @@ jobs:
           fi
 
       - name: Deploy static assets to Scaleway
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.SCW_ACCESS_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.SCW_SECRET_KEY }}
-          AWS_DEFAULT_REGION: fr-par
-          AWS_ENDPOINT_URL: https://s3.fr-par.scw.cloud
         run: |
           aws s3 sync ./public/ s3://${{ vars.SCW_SITE_BUCKET }}/ \
             --delete \
@@ -54,11 +55,6 @@ jobs:
             --exclude "*.html"
 
       - name: Deploy HTML pages to Scaleway
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.SCW_ACCESS_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.SCW_SECRET_KEY }}
-          AWS_DEFAULT_REGION: fr-par
-          AWS_ENDPOINT_URL: https://s3.fr-par.scw.cloud
         run: |
           aws s3 sync ./public/ s3://${{ vars.SCW_SITE_BUCKET }}/ \
             --acl public-read \
@@ -66,14 +62,14 @@ jobs:
             --exclude "*" \
             --include "*.html"
 
-      - name: Purge Edge Services cache
-        if: vars.SCW_EDGE_PIPELINE_ID != ''
-        env:
-          SCW_SECRET_KEY: ${{ secrets.SCW_SECRET_KEY }}
-        run: |-
-          curl -sf -X POST \
-            -H "X-Auth-Token: $SCW_SECRET_KEY" \
-            -H "Content-Type: application/json" \
-            "https://api.scaleway.com/edge-services/v1beta1/purge-requests" \
-            -d '{"pipeline_id":"${{ vars.SCW_EDGE_PIPELINE_ID }}","all":true}'
-          echo "Edge Services cache purged"
+      # - name: Purge Edge Services cache
+      #   if: vars.SCW_EDGE_PIPELINE_ID != ''
+      #   env:
+      #     SCW_SECRET_KEY: ${{ secrets.SCW_SECRET_KEY }}
+      #   run: |-
+      #     curl -sf -X POST \
+      #       -H "X-Auth-Token: $SCW_SECRET_KEY" \
+      #       -H "Content-Type: application/json" \
+      #       "https://api.scaleway.com/edge-services/v1beta1/purge-requests" \
+      #       -d '{"pipeline_id":"${{ vars.SCW_EDGE_PIPELINE_ID }}","all":true}'
+      #     echo "Edge Services cache purged"
