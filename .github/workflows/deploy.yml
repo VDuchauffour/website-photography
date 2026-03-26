@@ -2,9 +2,9 @@
 name: Deploy to Scaleway
 
 on:
-  release:
-    types:
-      - published
+  push:
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -24,9 +24,9 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v3
+        uses: gohugoio/hugo-action/setup@v3
         with:
-          hugo-version: 0.157.0
+          version: 0.157.0
 
       - name: Build
         run: hugo --gc --minify --baseURL "https://${{ vars.SCW_SITE_DOMAIN }}/"
