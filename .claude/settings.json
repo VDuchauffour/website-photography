@@ -1,0 +1,9 @@
+{
+  "skills": [
+    {
+      "name": "add-series",
+      "description": "Add a new photo series content page to the Hugo photography portfolio",
+      "file": "skills/add-series.md"
+    }
+  ]
+}
