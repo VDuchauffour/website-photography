@@ -111,11 +111,3 @@ resource "scaleway_domain_record" "apex" {
   data     = "${scaleway_edge_services_pipeline.website.id}.svc.edge.scw.cloud."
   ttl      = 300
 }
-
-resource "scaleway_domain_record" "www" {
-  dns_zone = var.website_domain
-  name     = "www"
-  type     = "CNAME"
-  data     = "${scaleway_edge_services_pipeline.website.id}.svc.edge.scw.cloud."
-  ttl      = 300
-}
