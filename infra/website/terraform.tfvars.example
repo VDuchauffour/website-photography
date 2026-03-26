@@ -10,6 +10,3 @@ scw_user_id    = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 # Website bucket
 region              = "fr-par"
 website_bucket_name = "site-vincentduchauffour"
-
-# Domain managed in Scaleway Domains & DNS
-website_domain = "vincentduchauffour.com"

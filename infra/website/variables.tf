@@ -35,7 +35,7 @@ variable "environment" {
 variable "website_bucket_name" {
   description = "Object Storage bucket name for the Hugo static site"
   type        = string
-  default     = "site-vincentduchauffour"
+  default     = "site-vincentduchauffour-v2"
 }
 
 variable "website_domain" {
