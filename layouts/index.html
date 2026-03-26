@@ -1,13 +1,16 @@
 {{ define "main" }}
+{{ $allImages := slice }}
+{{ range where .Site.RegularPages "Section" "series" }}
+  {{ range .Params.images }}
+    {{ $allImages = $allImages | append . }}
+  {{ end }}
+{{ end }}
 <section class="carousel">
   <div class="carousel-track">
-    {{ range where .Site.RegularPages "Section" "series" }}
-      {{ $series := .Title }}
-      {{ range .Params.images }}
+    {{ range shuffle $allImages }}
       <div class="carousel-slide">
         <img src="{{ .src }}" alt="{{ .alt }}" loading="eager">
       </div>
-      {{ end }}
     {{ end }}
   </div>
   <button class="carousel-arrow carousel-arrow--prev" aria-label="Previous image">&#8249;</button>
