@@ -69,7 +69,7 @@ jobs:
       - name: Purge Edge Services cache
         if: vars.SCW_EDGE_PIPELINE_ID != ''
         env:
-          SCW_SECRET_KEY: ${{ secrets.SCW_API_SECRET_KEY }}
+          SCW_SECRET_KEY: ${{ secrets.SCW_SECRET_KEY }}
         run: |-
           curl -sf -X POST \
             -H "X-Auth-Token: $SCW_SECRET_KEY" \
