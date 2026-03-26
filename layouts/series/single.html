@@ -2,6 +2,14 @@
 <article class="series-page">
   {{ with .Params.images }}
     <div class="series-grid">
+      {{ with $.Params.fullname }}
+        <h2 class="series-fullname">{{ . }}</h2>
+      {{ end }}
+      {{ if $.Content }}
+        <div class="series-text">
+          {{ $.Content }}
+        </div>
+      {{ end }}
       {{ range . }}
         <figure class="series-figure">
           <img src="{{ .src }}" alt="{{ .alt }}" loading="lazy">

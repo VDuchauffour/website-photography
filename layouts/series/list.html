@@ -7,9 +7,7 @@
           <img src="{{ .Params.coverImage }}" alt="{{ .Title }}" loading="lazy">
         </div>
         <div class="series-list-meta">
-          {{ with .Params.location }}
-            <span class="series-list-location">{{ . }}</span>
-          {{ end }}
+          <span class="series-list-location">{{ with .Params.fullname }}{{ . }}{{ else }}{{ .Title }}{{ end }}</span>
         </div>
       </a>
     {{ end }}

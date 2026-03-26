@@ -404,6 +404,8 @@ a:hover {
   padding: var(--space-xl) var(--space-lg) 0;
 }
 
+
+
 .series-grid {
   display: flex;
   flex-direction: column;
@@ -419,7 +421,26 @@ a:hover {
   object-fit: cover;
 }
 
+.series-fullname {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--white);
+  margin-bottom: var(--space-sm);
+}
 
+.series-text {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--gray-200);
+}
+
+.series-text p + p {
+  margin-top: var(--space-sm);
+}
 
 
 /* --- Footer --- */
