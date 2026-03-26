@@ -67,9 +67,8 @@ jobs:
         env:
           SCW_SECRET_KEY: ${{ secrets.SCW_SECRET_KEY }}
         run: |-
-          curl -sf -X POST \
+          curl -sv -X POST \
             -H "X-Auth-Token: $SCW_SECRET_KEY" \
             -H "Content-Type: application/json" \
             "https://api.scaleway.com/edge-services/v1beta1/purge-requests" \
             -d '{"pipeline_id":"${{ vars.SCW_EDGE_PIPELINE_ID }}","all":true}'
-          echo "Edge Services cache purged"
