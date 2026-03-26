@@ -2,8 +2,13 @@
   "skills": [
     {
       "name": "add-series",
-      "description": "Add a new photo series content page to the Hugo photography portfolio",
-      "file": "skills/add-series.md"
+      "description": "Add a new photo series to the Hugo photography portfolio",
+      "file": "skills/add-series/SKILL.md"
+    },
+    {
+      "name": "fetch-scaleway-photos",
+      "description": "List and browse photos stored on Scaleway Object Storage",
+      "file": "skills/fetch-scaleway-photos/SKILL.md"
     }
   ]
 }
