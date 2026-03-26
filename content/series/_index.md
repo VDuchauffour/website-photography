@@ -1,4 +1,4 @@
 ---
 title: Series
-description: Architecture photography series — brutalism, modernism, raw concrete
+description: Mostly modernist architecture through a raw lens
 ---
