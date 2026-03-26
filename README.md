@@ -20,39 +20,42 @@ Create a new file in `content/series/` (copy an existing one as template). Fill 
 
 Photos are hosted on Scaleway Object Storage. Images are referenced as URLs in series frontmatter.
 
-```bash
-# One-time setup: configure s3cmd via Scaleway CLI
-scw object config install type=s3cmd
+S3 credentials are loaded via `direnv` (`.envrc`). Run `direnv allow` once after cloning.
 
-# Upload a series
-./infra/scripts/upload.sh ./photos/brutalist-towers series/brutalist-towers
+```bash
+# Upload a single image
+./infra/scripts/upload.sh photos-vincentduchauffour ./photo.jpg series/brutalist-towers
+
+# Upload a directory
+./infra/scripts/upload.sh photos-vincentduchauffour ./photos/brutalist-towers series/brutalist-towers
 ```
 
 Then reference in your markdown:
 
 ```yaml
-coverImage: https://photos.s3.fr-par.scw.cloud/series/brutalist-towers/cover.jpg
+coverImage: https://photos-vincentduchauffour.s3.fr-par.scw.cloud/series/brutalist-towers/cover.jpg
 ```
 
 ### Infrastructure
 
-Bucket and access policies are managed with Terraform in `infra/`.
+Bucket, IAM policies, and upload credentials are managed with Terraform in `infra/`.
 
 ```bash
 cd infra
-cp terraform.tfvars.example terraform.tfvars # fill in your Scaleway API keys
+cp terraform.tfvars.example terraform.tfvars # fill in your Scaleway API keys + user ID
 tofu init && tofu apply
 ```
 
 ## Project Structure
 
 ```
+.envrc               direnv config — loads hugo, s3cmd, and S3 credentials
 config.toml          Site config (title, menu, social links)
 content/             Markdown content
   series/*.md         Photo series (frontmatter + body text)
   about/_index.md    About page
 layouts/             Hugo templates (no themes directory)
 static/css/style.css All styling — single vanilla CSS file
-infra/               Terraform — Scaleway Object Storage bucket
-  scripts/upload.sh  Upload images via s3cmd
+infra/               Terraform — Scaleway Object Storage + IAM
+  scripts/upload.sh  Upload images via s3cmd (single file or directory)
 ```

@@ -19,6 +19,11 @@ variable "scw_project_id" {
   type        = string
 }
 
+variable "scw_user_id" {
+  description = "Scaleway IAM user ID (owner of API keys)"
+  type        = string
+}
+
 ############################
 # Bucket configuration
 ############################

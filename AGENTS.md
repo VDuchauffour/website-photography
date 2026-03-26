@@ -6,14 +6,14 @@ Static photography portfolio built with **Hugo** (no themes, no JS frameworks). 
 
 ## Build & Dev Commands
 
-Hugo is not globally installed. Use nix:
+S3 credentials are loaded via `direnv` (`.envrc`). Run `direnv allow` after cloning. Tools (`hugo`, `s3cmd`) must be available on `PATH` (e.g. via `nix profile install`).
 
 ```bash
 # Dev server (with drafts)
-nix-shell -p hugo --run "hugo server -D"
+hugo server -D
 
 # Production build
-nix-shell -p hugo --run "hugo --gc --minify"
+hugo --gc --minify
 
 # Build output lands in public/
 ```
@@ -44,11 +44,11 @@ static/css/style.css           # ALL styling — single CSS file, no preprocesso
 archetypes/default.md          # Scaffolding template for new series entries
 infra/
   providers.tf                 # Scaleway provider config
-  main.tf                      # Object Storage bucket, public-read policy, CORS
-  variables.tf                 # Input variables (credentials, region, bucket name)
-  outputs.tf                   # Bucket name, endpoint, public base URL
+  main.tf                      # Object Storage bucket, bucket policy, IAM (application + policy + API key)
+  variables.tf                 # Input variables (credentials, region, bucket name, user ID)
+  outputs.tf                   # Bucket name, endpoint, public base URL, upload credentials
   terraform.tfvars.example     # Template for secrets — copy to terraform.tfvars
-  scripts/upload.sh            # Upload images via s3cmd (configured by scw CLI)
+  scripts/upload.sh            # Upload images via s3cmd (single file or directory)
 ```
 
 No `themes/` directory is used — all layouts live at project level. Do NOT create theme directories.
@@ -79,21 +79,23 @@ tofu init && tofu apply
 Provisioned resources:
 
 - `scaleway_object_bucket` — photo storage with CORS and lifecycle rules
-- `scaleway_object_bucket_policy` — public-read access for all objects
+- `scaleway_object_bucket_policy` — owner full access + public-read for objects
+- `scaleway_iam_policy` (user) — `ObjectStorageFullAccess` for the project owner
+- `scaleway_iam_application` + `scaleway_iam_policy` + `scaleway_iam_api_key` — dedicated upload credentials
 
 ### Uploading Images
 
-Requires `scw` CLI and `s3cmd`:
+S3 credentials are loaded automatically via `direnv` (`.envrc` sets `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`).
 
 ```bash
-# One-time: configure s3cmd via Scaleway CLI
-scw object config install type=s3cmd
+# Upload a single image
+./infra/scripts/upload.sh photos-vincentduchauffour ./photo.jpg series/brutalist-towers
 
-# Upload a series
-./infra/scripts/upload.sh ./photos/brutalist-towers series/brutalist-towers
+# Upload a directory
+./infra/scripts/upload.sh photos-vincentduchauffour ./photos/brutalist-towers series/brutalist-towers
 ```
 
-Images land at `s3://{bucket}/series/{series-name}/` and are publicly accessible immediately.
+Images land at `s3://{bucket}/{prefix}/` and are publicly accessible immediately.
 
 **File naming convention:** keep filenames lowercase, hyphenated, no spaces. Example: `bt-01.jpg`, `cover.jpg`.
 

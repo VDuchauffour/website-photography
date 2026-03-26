@@ -33,6 +33,41 @@ resource "scaleway_object_bucket" "photos" {
 }
 
 ############################
+# IAM — S3 upload credentials
+############################
+
+resource "scaleway_iam_policy" "user_s3_access" {
+  name    = "photography-user-s3-access"
+  user_id = var.scw_user_id
+
+  rule {
+    project_ids          = [var.scw_project_id]
+    permission_set_names = ["ObjectStorageFullAccess"]
+  }
+}
+
+resource "scaleway_iam_application" "upload" {
+  name        = "photo-upload"
+  description = "S3 upload access for photography portfolio"
+}
+
+resource "scaleway_iam_policy" "upload" {
+  name           = "photo-upload-s3-access"
+  application_id = scaleway_iam_application.upload.id
+
+  rule {
+    project_ids          = [var.scw_project_id]
+    permission_set_names = ["ObjectStorageFullAccess"]
+  }
+}
+
+resource "scaleway_iam_api_key" "upload" {
+  application_id     = scaleway_iam_application.upload.id
+  description        = "s3cmd upload key for photography bucket"
+  default_project_id = var.scw_project_id
+}
+
+############################
 # Public read policy (Scaleway requires version 2023-04-17)
 ############################
 
@@ -41,8 +76,18 @@ resource "scaleway_object_bucket_policy" "photos_public_read" {
 
   policy = jsonencode({
     Version = "2023-04-17"
-    Id      = "PublicReadPolicy"
+    Id      = "PhotosBucketPolicy"
     Statement = [
+      {
+        Sid       = "OwnerFullAccess"
+        Effect    = "Allow"
+        Principal = { SCW = "user_id:${var.scw_user_id}" }
+        Action    = "s3:*"
+        Resource = [
+          scaleway_object_bucket.photos.name,
+          "${scaleway_object_bucket.photos.name}/*"
+        ]
+      },
       {
         Sid       = "PublicReadGetObject"
         Effect    = "Allow"

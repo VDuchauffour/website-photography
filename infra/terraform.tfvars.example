@@ -6,6 +6,7 @@
 scw_access_key = "SCW..."
 scw_secret_key = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 scw_project_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+scw_user_id    = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 
 # Bucket config
 region      = "fr-par"          # fr-par | nl-ams | pl-waw
