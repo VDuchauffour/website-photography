@@ -1,0 +1,79 @@
+---
+name: Deploy to Scaleway
+
+on:
+  release:
+    types:
+      - published
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: 0.157.0
+
+      - name: Build
+        run: hugo --gc --minify --baseURL "https://${{ vars.SCW_SITE_DOMAIN }}/"
+
+      - name: Verify build
+        run: |
+          PAGE_COUNT=$(find ./public -name '*.html' | wc -l)
+          echo "Built ${PAGE_COUNT} HTML pages"
+          if [ "$PAGE_COUNT" -lt 10 ]; then
+            echo "::error::Expected at least 10 pages, got ${PAGE_COUNT}"
+            exit 1
+          fi
+
+      - name: Deploy static assets to Scaleway
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.SCW_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.SCW_SECRET_KEY }}
+          AWS_DEFAULT_REGION: fr-par
+          AWS_ENDPOINT_URL: https://s3.fr-par.scw.cloud
+        run: |
+          aws s3 sync ./public/ s3://${{ vars.SCW_SITE_BUCKET }}/ \
+            --delete \
+            --acl public-read \
+            --cache-control "max-age=86400, public" \
+            --exclude "*.html"
+
+      - name: Deploy HTML pages to Scaleway
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.SCW_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.SCW_SECRET_KEY }}
+          AWS_DEFAULT_REGION: fr-par
+          AWS_ENDPOINT_URL: https://s3.fr-par.scw.cloud
+        run: |
+          aws s3 sync ./public/ s3://${{ vars.SCW_SITE_BUCKET }}/ \
+            --acl public-read \
+            --cache-control "max-age=3600, must-revalidate" \
+            --exclude "*" \
+            --include "*.html"
+
+      - name: Purge Edge Services cache
+        if: vars.SCW_EDGE_PIPELINE_ID != ''
+        env:
+          SCW_SECRET_KEY: ${{ secrets.SCW_API_SECRET_KEY }}
+        run: |-
+          curl -sf -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            "https://api.scaleway.com/edge-services/v1beta1/purge-requests" \
+            -d '{"pipeline_id":"${{ vars.SCW_EDGE_PIPELINE_ID }}","all":true}'
+          echo "Edge Services cache purged"

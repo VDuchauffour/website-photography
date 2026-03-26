@@ -21,9 +21,9 @@ hugo.linux
 # End of https://www.toptal.com/developers/gitignore/api/hugo
 
 ### Terraform ###
-infra/.terraform/
-infra/.terraform.lock.hcl
-infra/*.tfstate
-infra/*.tfstate.backup
-infra/terraform.tfvars
-infra/.terraform.tfstate.lock.info
+infra/**/.terraform/
+infra/**/.terraform.lock.hcl
+infra/**/*.tfstate
+infra/**/*.tfstate.backup
+infra/**/terraform.tfvars
+infra/**/.terraform.tfstate.lock.info
