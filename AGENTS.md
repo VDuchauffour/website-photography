@@ -2,28 +2,53 @@
 
 ## Project Overview
 
-Static photography portfolio built with **Hugo** (no themes, no JS frameworks). Dark brutalist aesthetic for architecture photography. Three pages: Home, Series (with individual series), About.
+Static photography portfolio built with **Hugo** (no themes, no JS frameworks). Dark brutalist aesthetic for architecture photography. Three pages: Home, Series (with individual series), About. Deployed to Scaleway Object Storage via GitHub Actions, served through Edge Services CDN at `vincentduchauffour.com`.
 
 ## Build & Dev Commands
 
-S3 credentials are loaded via `direnv` (`.envrc`). Run `direnv allow` after cloning. Tools (`hugo`, `s3cmd`) must be available on `PATH` (e.g. via `nix profile install`).
+S3 credentials are loaded via `direnv` (`.envrc`). Run `direnv allow` after cloning.
 
 ```bash
-# Dev server (with drafts)
-hugo server -D
+# Dev server (Docker — live reload, drafts, localhost:1313)
+make dev
 
-# Production build
+# Stop dev server
+make dev-stop
+
+# Production build (local)
 hugo --gc --minify
 
-# Build output lands in public/
+# Clean build artifacts
+make clean
 ```
 
-There are **no tests, no linter, no CI pipeline**. Verification is: `hugo` exits 0 and produces expected page count (currently 16 pages).
+There are **no tests, no linter**. Verification is: `hugo` exits 0 and produces expected page count (currently 16 pages).
+
+## Deployment
+
+Deploys automatically on **push to `main`** via GitHub Actions (`.github/workflows/deploy.yml`):
+
+1. Hugo build with `--gc --minify`
+2. `aws s3 sync` to Scaleway Object Storage (static assets with long cache, HTML with short cache)
+3. Edge Services cache purge via Scaleway API
+
+**GitHub repository variables** (`vars.*`):
+
+- `SCW_SITE_DOMAIN` — `vincentduchauffour.com`
+- `SCW_SITE_BUCKET` — `site-vincentduchauffour`
+- `SCW_EDGE_PIPELINE_ID` — Edge Services pipeline UUID
+
+**GitHub repository secrets** (`secrets.*`):
+
+- `SCW_ACCESS_KEY` — Scaleway API access key (S3 uploads)
+- `SCW_SECRET_KEY` — Scaleway API secret key (S3 uploads + Edge Services cache purge)
 
 ## Project Structure
 
 ```
 config.toml                    # Site config (TOML only — not YAML, not JSON)
+compose.yml                    # Docker Compose — dev profile only (Hugo server)
+Makefile                       # dev, dev-stop, clean targets
 content/
   _index.md                    # Homepage (minimal frontmatter)
   about/_index.md              # About page (branch bundle)
@@ -42,13 +67,18 @@ layouts/
   partials/footer.html         # Social SVG icons + copyright
 static/css/style.css           # ALL styling — single CSS file, no preprocessor
 archetypes/default.md          # Scaffolding template for new series entries
+.github/workflows/deploy.yml   # GitHub Actions — build + deploy to Scaleway on push to main
 infra/
-  providers.tf                 # Scaleway provider config
-  main.tf                      # Object Storage bucket, bucket policy, IAM (application + policy + API key)
-  variables.tf                 # Input variables (credentials, region, bucket name, user ID)
-  outputs.tf                   # Bucket name, endpoint, public base URL, upload credentials
-  terraform.tfvars.example     # Template for secrets — copy to terraform.tfvars
-  scripts/upload.sh            # Upload images via s3cmd (single file or directory)
+  storage/                     # Terraform — photo storage bucket + IAM upload credentials
+    main.tf
+    variables.tf
+    outputs.tf
+    scripts/upload.sh           # Upload images via s3cmd (single file or directory)
+  website/                     # Terraform — website bucket, Edge Services CDN, DNS records
+    main.tf                    # Object Storage bucket, bucket policy, Edge Services pipeline, DNS ALIAS record
+    variables.tf               # Input variables (credentials, region, bucket name, domain)
+    outputs.tf                 # Bucket name, S3 endpoint, pipeline ID, CNAME target
+    terraform.tfvars.example   # Template for secrets — copy to terraform.tfvars
 ```
 
 No `themes/` directory is used — all layouts live at project level. Do NOT create theme directories.
@@ -62,26 +92,38 @@ Images are hosted on **Scaleway Object Storage** (S3-compatible) and referenced 
 Example in frontmatter:
 
 ```yaml
-coverImage: https://photos.s3.fr-par.scw.cloud/series/brutalist-towers/cover.jpg
+coverImage: https://photos-vincentduchauffour.s3.fr-par.scw.cloud/series/brutalist-towers/cover.jpg
 ```
 
 ### Infrastructure (Terraform)
 
-Infra lives in `infra/`. Managed with OpenTofu/Terraform.
+Infra is split into two modules under `infra/`:
+
+- **`infra/storage/`** — Photo storage bucket + IAM upload credentials
+- **`infra/website/`** — Website hosting bucket, Edge Services CDN pipeline, DNS records
 
 ```bash
-# Init + apply
-cd infra
+# Init + apply (website module)
+cd infra/website
 cp terraform.tfvars.example terraform.tfvars # fill in Scaleway API keys
-tofu init && tofu apply
+terraform init && terraform apply
 ```
 
-Provisioned resources:
+**Website module resources** (`infra/website/main.tf`):
 
-- `scaleway_object_bucket` — photo storage with CORS and lifecycle rules
+- `scaleway_object_bucket` — website static files (Hugo output)
+- `scaleway_object_bucket_website_configuration` — S3 website hosting (index.html, 404.html)
 - `scaleway_object_bucket_policy` — owner full access + public-read for objects
-- `scaleway_iam_policy` (user) — `ObjectStorageFullAccess` for the project owner
-- `scaleway_iam_application` + `scaleway_iam_policy` + `scaleway_iam_api_key` — dedicated upload credentials
+- `scaleway_edge_services_plan` — Edge Services starter plan
+- `scaleway_edge_services_pipeline` — CDN pipeline (backend → cache → TLS → DNS → head)
+- `scaleway_edge_services_backend_stage` — S3 website backend
+- `scaleway_edge_services_cache_stage` — CDN cache (1h fallback TTL)
+- `scaleway_edge_services_tls_stage` — managed Let's Encrypt certificate
+- `scaleway_edge_services_dns_stage` — custom domains (apex + www)
+- `scaleway_edge_services_head_stage` — pipeline entry point
+- `scaleway_domain_record` (apex) — ALIAS record for `vincentduchauffour.com` → Edge Services
+
+The `www` CNAME record is auto-managed by Scaleway Edge Services (domain is in Scaleway Domains & DNS). Only the apex ALIAS record is in Terraform.
 
 ### Uploading Images
 
@@ -89,10 +131,10 @@ S3 credentials are loaded automatically via `direnv` (`.envrc` sets `AWS_ACCESS_
 
 ```bash
 # Upload a single image
-./infra/scripts/upload.sh photos-vincentduchauffour ./photo.jpg series/brutalist-towers
+./infra/storage/scripts/upload.sh photos-vincentduchauffour ./photo.jpg series/brutalist-towers
 
 # Upload a directory
-./infra/scripts/upload.sh photos-vincentduchauffour ./photos/brutalist-towers series/brutalist-towers
+./infra/storage/scripts/upload.sh photos-vincentduchauffour ./photos/brutalist-towers series/brutalist-towers
 ```
 
 Images land at `s3://{bucket}/{prefix}/` and are publicly accessible immediately.
@@ -130,7 +172,7 @@ Body text: 1–2 paragraphs describing the series. No lorem ipsum.
 ### Adding a New Series
 
 ```bash
-nix-shell -p hugo --run "hugo new series/new-series-name.md"
+hugo new series/new-series-name.md
 ```
 
 This uses `archetypes/default.md` which pre-fills coverImage with a picsum.photos URL seeded from the filename.

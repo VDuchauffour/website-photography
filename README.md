@@ -1,16 +1,20 @@
 # Website for my photographies
 
-Photography portfolio built with Hugo.
+Photography portfolio built with Hugo. Deployed to Scaleway Object Storage via GitHub Actions, served through Edge Services CDN.
 
 ## Quick Start
 
 ```bash
-# Dev server — live reload, drafts enabled, localhost:1313
-docker compose --profile dev up
+# Dev server (Docker) — live reload, drafts enabled, localhost:1313
+make dev
 
-# Production — nginx, localhost:8080
-docker compose --profile prod up --build
+# Stop dev server
+make dev-stop
 ```
+
+## Deployment
+
+Deploys automatically on push to `main` via GitHub Actions: Hugo build, S3 sync, Edge Services cache purge.
 
 ## Adding a Series
 
@@ -38,24 +42,24 @@ coverImage: https://photos-vincentduchauffour.s3.fr-par.scw.cloud/series/brutali
 
 ### Infrastructure
 
-Bucket, IAM policies, and upload credentials are managed with Terraform in `infra/`.
+Bucket, Edge Services CDN, DNS records, and upload credentials are managed with Terraform in `infra/`.
 
 ```bash
-cd infra
+cd infra/website
 cp terraform.tfvars.example terraform.tfvars # fill in your Scaleway API keys + user ID
-tofu init && tofu apply
+terraform init && terraform apply
 ```
 
 ## Project Structure
 
 ```
-.envrc               direnv config — loads hugo, s3cmd, and S3 credentials
+.envrc               direnv config — loads S3 credentials
 config.toml          Site config (title, menu, social links)
 content/             Markdown content
-  series/*.md         Photo series (frontmatter + body text)
+  series/*.md        Photo series (frontmatter + body text)
   about/_index.md    About page
 layouts/             Hugo templates (no themes directory)
 static/css/style.css All styling — single vanilla CSS file
-infra/               Terraform — Scaleway Object Storage + IAM
-  scripts/upload.sh  Upload images via s3cmd (single file or directory)
+infra/website/       Terraform — Object Storage, Edge Services CDN, DNS
+infra/storage/       Terraform — photo storage bucket + IAM
 ```
