@@ -38,8 +38,8 @@ variable "website_bucket_name" {
   default     = "site-vincentduchauffour"
 }
 
-variable "website_fqdns" {
-  description = "FQDNs for Edge Services CDN — must be subdomains for CNAME (e.g. www.example.com)"
-  type        = list(string)
-  default     = ["www.vincentduchauffour.com"]
+variable "website_domain" {
+  description = "Root domain name managed in Scaleway Domains & DNS"
+  type        = string
+  default     = "vincentduchauffour.com"
 }

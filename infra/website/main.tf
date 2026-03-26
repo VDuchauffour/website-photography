@@ -92,10 +92,22 @@ resource "scaleway_edge_services_tls_stage" "website" {
 resource "scaleway_edge_services_dns_stage" "website" {
   pipeline_id  = scaleway_edge_services_pipeline.website.id
   tls_stage_id = scaleway_edge_services_tls_stage.website.id
-  fqdns        = var.website_fqdns
+  fqdns        = [var.website_domain, "www.${var.website_domain}"]
 }
 
 resource "scaleway_edge_services_head_stage" "website" {
   pipeline_id   = scaleway_edge_services_pipeline.website.id
   head_stage_id = scaleway_edge_services_dns_stage.website.id
+}
+
+############################
+# DNS records
+############################
+
+resource "scaleway_domain_record" "apex" {
+  dns_zone = var.website_domain
+  name     = ""
+  type     = "ALIAS"
+  data     = "${scaleway_edge_services_pipeline.website.id}.svc.edge.scw.cloud."
+  ttl      = 300
 }

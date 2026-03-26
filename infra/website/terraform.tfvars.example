@@ -11,5 +11,5 @@ scw_user_id    = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 region              = "fr-par"
 website_bucket_name = "site-vincentduchauffour"
 
-# Edge Services CDN — must be subdomains (CNAME requirement)
-website_fqdns = ["www.vincentduchauffour.com"]
+# Domain managed in Scaleway Domains & DNS
+website_domain = "vincentduchauffour.com"
