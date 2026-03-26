@@ -518,6 +518,25 @@ a:hover {
 
 /* --- Responsive --- */
 
+/* Static header for narrow viewports */
+@media (max-width: 1120px) {
+  .site-header {
+    position: relative;
+  }
+
+  .carousel {
+    margin-top: var(--space-sm);
+  }
+
+  .series-list-page {
+    padding-top: var(--space-sm);
+  }
+
+  .series-page {
+    padding-top: var(--space-sm);
+  }
+}
+
 /* Tablet */
 @media (max-width: 1024px) {
   :root {
@@ -540,10 +559,6 @@ a:hover {
     max-width: 400px;
   }
 
-  .series-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 
 /* Mobile */
@@ -574,15 +589,6 @@ a:hover {
   .series-list-grid {
     grid-template-columns: 1fr;
     gap: var(--space-lg);
-  }
-
-  .series-page {
-    padding-top: calc(var(--space-2xl) + 1rem);
-  }
-
-  .series-grid {
-    display: grid;
-    grid-template-columns: 1fr;
   }
 
   .footer-inner {
