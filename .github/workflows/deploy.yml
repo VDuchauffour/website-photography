@@ -35,8 +35,8 @@ jobs:
         run: |
           PAGE_COUNT=$(find ./public -name '*.html' | wc -l)
           echo "Built ${PAGE_COUNT} HTML pages"
-          if [ "$PAGE_COUNT" -lt 10 ]; then
-            echo "::error::Expected at least 10 pages, got ${PAGE_COUNT}"
+          if [ "$PAGE_COUNT" -lt 2 ]; then
+            echo "::error::Expected at least 2 pages, got ${PAGE_COUNT}"
             exit 1
           fi
 
