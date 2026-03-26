@@ -5,7 +5,7 @@
   </div>
   <div class="series-list-grid">
     {{ range .Pages }}
-      <a href="{{ .Permalink }}" class="series-list-item">
+      <a href="{{ .RelPermalink }}" class="series-list-item">
         <div class="series-list-img">
           {{ with .Params.coverImage }}
             <img src="{{ . }}" alt="{{ $.Title }}" loading="lazy">

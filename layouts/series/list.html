@@ -2,7 +2,7 @@
 <section class="series-list-page">
   <div class="series-list-grid">
     {{ range .Pages }}
-      <a href="{{ .Permalink }}" class="series-list-item">
+      <a href="{{ .RelPermalink }}" class="series-list-item">
         <div class="series-list-img">
           <img src="{{ .Params.coverImage }}" alt="{{ .Title }}" loading="lazy">
         </div>
